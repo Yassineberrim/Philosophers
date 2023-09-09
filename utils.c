@@ -1,17 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   outils.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:23:18 by yberrim           #+#    #+#             */
-/*   Updated: 2023/06/18 22:23:38 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/06/19 12:37:48 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Philo.h"
 
+int ft_isdigit(int c)
+{
+    return (c >= '0' && c <= '9');
+}
 int	ft_atoi_helper(const char *str, int i, int sign, long nb)
 {
 	while (str[i])
