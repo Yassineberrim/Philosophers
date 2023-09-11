@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 19:09:13 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/09 21:40:44 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/11 13:56:10 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ typedef struct s_general
     int t_e;
     int n_p;
     int n_e;
-    
+    pthread_mutex_t	*forks;
 }               t_general;
 
 typedef struct s_philo
 {
     int id;
-    pthread_mutex_t  left_fork;
-    pthread_mutex_t  right_fork;
-    pthread_mutex_t  *mutex;
+    long long last_meal;
+    int number_meals;
+    int  left_fork;
+    int  right_fork;
+    t_general *general;
+    pthread_t thread;
 }                   t_philo;
 int	ft_atoi(const char *str);
 #endif
