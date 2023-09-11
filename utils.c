@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:23:18 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/11 14:19:37 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:08:18 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,14 @@ int	ft_atoi(const char *str)
 	return (ft_atoi_helper(str, i, sign, nb));
 }
 
-// void	ft_usleep(int time, t_philo *ph)
-// {
-// 	struct timeval	sleep;
-// 	struct timeval	sleep2;
+int ft_usleep(unsigned int microseconds)
+{
+    struct timespec req;
+    req.tv_sec = microseconds / 1000000;
+    req.tv_nsec = (microseconds % 1000000) * 1000;
 
-// 	gettimeofday(&sleep, 0);
-// 	while (!ph->tools->is_dead)
-// 	{
-// 		usleep(100);
-// 		gettimeofday(&sleep2, 0);
-// 		if (((sleep2.tv_sec * 1000 + sleep2.tv_usec / 1000) - (sleep.tv_sec
-// 					* 1000 + sleep.tv_usec / 1000)) >= time)
-// 			return ;
-// 	}
-// }
+    return nanosleep(&req, NULL);
+}
 
 // long long	gettime(t_tools *tools)
 // {
@@ -87,20 +80,3 @@ int	ft_atoi(const char *str)
 // 			* 1000 + tools->t_0.tv_usec / 1000));
 // }
 
-#include <sys/time.h>
-
-int main()
-{
-	struct timeval	time0;
-	struct timeval	time1;
-	
-	gettimeofday(&time0, NULL);
-	printf("time is s : %ld | time us %d\n",time0.tv_sec,time0.tv_usec);
-	usleep(1000);
-	gettimeofday(&time1, NULL);
-	printf("time is s : %ld | time us %d\n",time1.tv_sec,time1.tv_usec);
-
-	long long time;
-	time = time0.tv_sec - time1.tv_sec + time1.tv_usec -time1.tv_usec;
-	printf("%lld", time);
-}

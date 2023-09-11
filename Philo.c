@@ -6,7 +6,7 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 19:08:41 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/11 14:00:23 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:54:17 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 long long gettime_now(t_philo *data)
 {
-    data->
+    struct timeval tv;
+    
+    if (gettimeofday(&tv, NULL) != 0)
+    {
+        return -1;
+    }
+    long long current_time = (long long)(tv.tv_sec) * 1000 + (long long)(tv.tv_usec) / 1000;
+    return current_time;
 }
+
 void mutex_init(t_general *data)
 {
     data->forks = calloc(sizeof(pthread_mutex_t)* data->n_p, 1);
@@ -26,27 +34,29 @@ void mutex_init(t_general *data)
         i++;
     }
 }
+
 void *routine(void *data)
 {
     t_philo *philo = (t_philo*) data;
+    
     while (1)
     {
-        printf("%d is thinking \n",philo->id);
+        printf("%lld Philosopher %d is thinking\n", gettime_now(philo) - philo->general->start_time, philo->id);
         pthread_mutex_lock(&philo->general->forks[philo->right_fork]);
+        printf("%lld Philosopher %d has taken the right fork\n", gettime_now(philo) - philo->general->start_time, philo->id);
         pthread_mutex_lock(&philo->general->forks[philo->left_fork]);
-        printf("%d has taken a fork\n",philo->id);
-        printf("%d has taken a fork\n",philo->id);
-        printf("%d is eating\n",philo->id);
-        // gettime_now()
-        usleep(philo->general->t_e);
+        printf("%lld Philosopher %d has taken the left fork\n", gettime_now(philo) - philo->general->start_time, philo->id);
+        printf("%lld Philosopher %d is eating\n", gettime_now(philo) - philo->general->start_time, philo->id);
+        ft_usleep(philo->general->t_e);
         pthread_mutex_unlock(&philo->general->forks[philo->right_fork]);
         pthread_mutex_unlock(&philo->general->forks[philo->left_fork]);
-        printf("%d is sleeping\n",philo->id);
-        usleep(philo->general->t_s);
+        printf("%lld Philosopher %d is sleeping\n", gettime_now(philo) - philo->general->start_time, philo->id);
+        ft_usleep(philo->general->t_s);
         
     }
     return NULL;
 }
+
 
 int main(int ac, char **av)
 {
@@ -56,9 +66,9 @@ int main(int ac, char **av)
         general->t_e = ft_atoi(av[3]);
         general->t_s = ft_atoi(av[4]);
         general->n_e = -1;
-    // pthread_t *threads = malloc(sizeof(pthread_t) * philo.n_p);
+        
     t_philo *philos = calloc(sizeof(t_philo) * general->n_p, 1);
-    
+    general->start_time = gettime_now(NULL);
     mutex_init(general);
     if (ac > 1)
     {
