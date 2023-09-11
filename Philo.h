@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Philo.h                                            :+:      :+:    :+:   */
+/*   philosophers.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 19:09:13 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/11 15:25:40 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/11 23:15:52 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-#define PHILOSOPHERS_H
+#ifndef PHILO_H
+#define PHILO_H
 #include<unistd.h>
 #include<stdio.h>
 #include<pthread.h>
@@ -29,7 +29,10 @@ typedef struct s_general
     int n_p;
     int n_e;
     time_t start_time;
+    int flag;
     pthread_mutex_t	*forks;
+    pthread_mutex_t	meals_mutex;
+    pthread_mutex_t	mutex_print;
 }               t_general;
 
 typedef struct s_philo
@@ -42,6 +45,13 @@ typedef struct s_philo
     t_general *general;
     pthread_t thread;
 }                   t_philo;
-int ft_usleep(unsigned int microseconds);
+void	ft_usleep(int time, t_philo *ph);
+long long gettime_now(void);
 int	ft_atoi(const char *str);
+int check_n_meals(t_philo *data);
+void *routine(void *data);
+int	ft_atoi(const char *str);
+int ft_isdigit(int c);
+int	ft_atoi_helper(const char *str, int i, int sign, long nb);
+void mutex_init(t_general *data);
 #endif
