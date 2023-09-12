@@ -32,6 +32,7 @@ typedef struct s_general
     int flag;
     pthread_mutex_t	*forks;
     pthread_mutex_t	meals_mutex;
+    pthread_mutex_t	mutex_death;
     pthread_mutex_t	mutex_print;
 }               t_general;
 

@@ -6,11 +6,11 @@
 /*   By: yberrim <yberrim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:23:18 by yberrim           #+#    #+#             */
-/*   Updated: 2023/09/11 23:20:06 by yberrim          ###   ########.fr       */
+/*   Updated: 2023/09/12 17:07:29 by yberrim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Philo.h"
+#include "philo.h"
 
 int ft_isdigit(int c)
 {
@@ -71,14 +71,15 @@ void	ft_usleep(int time, t_philo *data)
 	gettimeofday(&sleep, 0);
 	while (1)
 	{
-		//mutex
+		pthread_mutex_lock(&data->general->meals_mutex);	
 		if(data->last_meal == 1)
 			break;
-		//mutex
+		pthread_mutex_unlock(&data->general->meals_mutex);
 		usleep(100);
 		gettimeofday(&sleep2, 0);
 		if (((sleep2.tv_sec * 1000 + sleep2.tv_usec / 1000) - (sleep.tv_sec
 					* 1000 + sleep.tv_usec / 1000)) >= time)
 			return ;
 	}
+	pthread_mutex_unlock(&data->general->meals_mutex);
 }
